@@ -1,7 +1,6 @@
 use actix_session::storage::CookieSessionStore;
 use actix_web::{App, get, HttpRequest, HttpResponse, HttpServer, Responder, web};
 use actix_web::cookie::{Cookie};
-use actix_web::http::header::HeaderValue;
 
 
 use actix_web::middleware::Logger;
@@ -10,8 +9,7 @@ use handlebars::{Handlebars};
 use log::{debug, warn};
 use oauth2::{AuthorizationCode, AuthUrl, ClientId, ClientSecret, CsrfToken, PkceCodeChallenge, RedirectUrl, TokenResponse, TokenUrl};
 use oauth2::basic::{BasicClient};
-use reqwest::{Error, Response};
-use reqwest::header::HeaderMap;
+
 
 use serde::Deserialize;
 use serde_json::json;
@@ -23,7 +21,7 @@ struct AppState {
 
 
 #[get("/logout")]
-async fn logout(data: web::Data<AppState>) -> impl Responder {
+async fn logout(_data: web::Data<AppState>) -> impl Responder {
     let cookie = Cookie::build("access_token", "")
         .path("/")
         .secure(true)
@@ -98,7 +96,6 @@ async fn github_redirect(data: web::Data<AppState>, query: web::Query<AuthCode>)
 
 
 async fn get_username(access_token: &str) -> Result<String, anyhow::Error> {
-    let github_api_url = "https://api.github.com/user";
     let client = reqwest::Client::new();
 
     let bearer = format!("Bearer {}", access_token);
@@ -146,7 +143,7 @@ async fn index(req: HttpRequest, data: web::Data<AppState>) -> impl Responder {
                         "username": username,
                     })
                 }
-                Err(err) => {
+                Err(_err) => {
                     warn!("Error while retrieving username!");
                     default_context
                 }
@@ -187,8 +184,6 @@ fn oauth2_client() -> Result<BasicClient, url::ParseError> {
 
 fn session_middleware() -> actix_session::SessionMiddleware<CookieSessionStore> {
     use actix_session::SessionMiddleware;
-    use actix_session::storage::CookieSessionStore;
-    use actix_web;
     use actix_web::cookie::Key;
     SessionMiddleware::builder(
         CookieSessionStore::default(), Key::from(&[0; 64]),
