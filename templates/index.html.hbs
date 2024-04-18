@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="/css/bulma.min.css">
+</head>
+<body>
+<header class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Actix-Web OAuth2 Example
+            </h1>
+            <h2 class="subtitle">
+                Login in with Github
+            </h2>
+        </div>
+    </div>
+</header>
+
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="card">
+                    <div class="card-content">
+                        <h1 class="title">
+                            Actix-web OAuth2 Example
+                        </h1>
+                        <p class="subtitle">
+                            Login via Github
+                        </p>
+                        <div class="buttons is-centered">
+                            {{#if logged_in}}
+                                Du bist eingeloggt als {{username}}!
+                                <a href="/logout">
+                                    <button class="button is-danger">Logout</button>
+                                </a>
+                            {{else}}
+                                <a href="/login/github">
+                                    <button class="button is-primary">Login</button>
+                                </a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            Mein Bulma Footer
+        </p>
+    </div>
+</footer>
+</body>
+</html>
